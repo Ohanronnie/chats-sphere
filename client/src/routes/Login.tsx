@@ -26,7 +26,7 @@ function Login() {
     try {
       let response = await axios().post("/register/login", value);
       localStorage.setItem("token", response.data.token);
-      navigate("/");
+      navigate("/home");
     } catch (err: any) {
       setError(err?.response?.data?.message || err.message);
     }
