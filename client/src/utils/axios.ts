@@ -6,22 +6,18 @@ export default function instance(): AxiosInstance {
     withCredentials: true,
     timeout: 1000 * 60 * 60,
   });
-  /*  instance.interceptors.request.use(
+  instance.interceptors.request.use(
     async (config) => {
-      let csrf;
-      if (sessionStorage.getItem("token")) {
-        csrf = sessionStorage.getItem("token");
-      } else {
-        let csrfToken = await axios.get("http://localhost:3001/csrf");
-        sessionStorage.setItem("token", csrfToken.data);
-        csrf = csrfToken.data;
+      let token;
+      if (localStorage.getItem("token")) {
+        token = localStorage.getItem("token");
+        config.headers["Authorisation"] = `Bearer ${token}`;
       }
-      config.headers["X-CSRF-Token"] = csrf;
       return config;
     },
     (error) => {
       return Promise.reject(error);
     }
-  );*/
+  );
   return instance;
 }

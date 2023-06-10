@@ -8,7 +8,7 @@ type SocketProviderProps = {
 };
 // Define a SocketContext provider component
 export const SocketProvider: FC<SocketProviderProps> = ({ children }) => {
-  let socket: Socket = io("http://localhost:3000");
+  let socket: Socket = io("http://localhost:3001");
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );

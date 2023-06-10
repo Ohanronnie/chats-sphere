@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface IState {
+interface IState {
   id: string;
   messages: string[];
 }
-
+export type RootState = {
+  user: IState;
+};
 const initialState: IState = {
   id: "",
   messages: [],
 };
 
 const idSlice = createSlice({
-  name: "userData",
+  name: "user",
   initialState,
   reducers: {
     setId: (state, action: PayloadAction<string>) => {

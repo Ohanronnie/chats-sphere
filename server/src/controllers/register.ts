@@ -130,7 +130,7 @@ export default class Register {
           { email: isEmailValid.email, _id: isEmailValid._id },
           process.env.SECRET_KEY!,
           {
-            expiresIn: "30days",
+            expiresIn: "30d",
           }
         );
         return res.status(200).json({ token: token });

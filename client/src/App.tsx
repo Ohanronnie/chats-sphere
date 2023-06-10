@@ -6,7 +6,6 @@ import AddChats from "./routes/AddChat";
 import Home from "./routes/Home";
 import Token from "./routes/VerifyToken";
 import { io, Socket } from "socket.io-client";
-import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 const socket: Socket = io("http://localhost:3001");
 export default function Router() {

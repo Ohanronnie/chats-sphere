@@ -8,12 +8,13 @@ import { CorsConfig } from "./interfaces/cors.js";
 import { IMessage } from "./interfaces/message.js";
 import { defaultConfig } from "./controllers/config.js";
 import register from "./routes/register.js";
+import api from "./routes/chat.js";
 import { createServer } from "http";
-import socketIO from "socket.io";
+import { Server, Socket } from "socket.io";
 dotenv.config();
 const app: Application = express();
 const http = createServer(app);
-const io = socketIO(http);
+const io = new Server(http);
 const config: CorsConfig = {
   origin: process.env.FRONTENDURL!,
   credentials: true,
@@ -25,7 +26,8 @@ app.use(cookieParser());
 app.use(cors(config));
 app.use(defaultConfig);
 app.use("/register", register);
-io.on("connection", function (socket: any) {
+app.use("/api", api);
+io.on("connection", function (socket: Socket) {
   console.log(`${socket.id} just connected`);
   socket.on("newMessage", function (message: IMessage) {
     console.log(message);

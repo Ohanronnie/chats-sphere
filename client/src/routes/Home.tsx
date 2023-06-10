@@ -1,9 +1,29 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { RootState, setId } from "../store/slice.ts";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "../utils/axios.ts";
 import "../assets/css/style.css";
 import dummy from "../assets/images/image.jpg";
 import plus from "../assets/images/plus.svg";
+
 function Home() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state: RootState) => state.user.id);
+  useEffect(function () {
+    if (token.length < 5) {
+      axios()
+        .get("/api/me")
+        .then((response) => {
+          dispatch(setId(response.data));
+        })
+        .catch((error) => {
+          localStorage.removeItem("token");
+          navigate("register/login");
+        });
+    }
+  }, []);
   return (
     <div className="bg-slate-100 h-[100vh]">
       <nav className="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-center items-center shadoew-md bg-white">

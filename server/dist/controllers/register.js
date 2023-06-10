@@ -103,7 +103,7 @@ export default class Register {
                     .json(message("Please, click the link in your email to confirm your email"));
             else {
                 let token = jwt.sign({ email: isEmailValid.email, _id: isEmailValid._id }, process.env.SECRET_KEY, {
-                    expiresIn: "30days",
+                    expiresIn: "30d",
                 });
                 return res.status(200).json({ token: token });
             }

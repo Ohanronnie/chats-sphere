@@ -5,12 +5,13 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { defaultConfig } from "./controllers/config.js";
 import register from "./routes/register.js";
+import api from "./routes/chat.js";
 import { createServer } from "http";
-import socketIO from "socket.io";
+import { Server } from "socket.io";
 dotenv.config();
 const app = express();
 const http = createServer(app);
-const io = socketIO(http);
+const io = new Server(http);
 const config = {
     origin: process.env.FRONTENDURL,
     credentials: true,
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(cors(config));
 app.use(defaultConfig);
 app.use("/register", register);
+app.use("/api", api);
 io.on("connection", function (socket) {
     console.log(`${socket.id} just connected`);
     socket.on("newMessage", function (message) {
