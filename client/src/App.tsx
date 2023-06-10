@@ -1,25 +1,28 @@
-import React from "react";
-import "./App.css";
-
-function App() {
+import Menu from "./routes/Menu";
+import Signup from "./routes/Register";
+import Login from "./routes/Login";
+import Chats from "./routes/Chats";
+import AddChats from "./routes/AddChat";
+import Home from "./routes/Home";
+import Token from "./routes/VerifyToken";
+import { io, Socket } from "socket.io-client";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+const socket: Socket = io("http://localhost:3001");
+export default function Router() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route index element={<Menu />} />
+          <Route path="register/signup" element={<Signup />} />
+          <Route path="register/login" element={<Login />} />
+          <Route path="register/token" element={<Token />} />
+          <Route path="home" element={<Home />} />
+          <Route path="chats" element={<Chats />} />
+          <Route path="adduser" element={<AddChats />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

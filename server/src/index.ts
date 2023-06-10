@@ -5,15 +5,15 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import csrf from "csurf";
 import { CorsConfig } from "./interfaces/cors.js";
+import { IMessage } from "./interfaces/message.js";
 import { defaultConfig } from "./controllers/config.js";
 import register from "./routes/register.js";
+import { createServer } from "http";
+import socketIO from "socket.io";
 dotenv.config();
 const app: Application = express();
-/*app.use(cors({
-  origin: process.env.FRONTENDURL + '/',
-  methods: 'GET, POST, PUT, DELETE',
-  allowedHeaders: 'Content-Type, Authorization'
-}));*/
+const http = createServer(app);
+const io = socketIO(http);
 const config: CorsConfig = {
   origin: process.env.FRONTENDURL!,
   credentials: true,
@@ -23,24 +23,17 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
-/*app.use(
-  csrf({
-    cookie: {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 24hrs,
-      sameSite: "strict",
-    },
-  })
-);*/
 app.use(defaultConfig);
 app.use("/register", register);
-app.get("/csrf", function (req: Request, res: Response) {
-  let token: string = req.csrfToken();
-  console.log(token);
-  res.json(token);
-  res.end();
+io.on("connection", function (socket: any) {
+  console.log(`${socket.id} just connected`);
+  socket.on("newMessage", function (message: IMessage) {
+    console.log(message);
+  });
+  io.on("disconnect", function () {
+    console.log(`${socket.id} just disconnected`);
+  });
 });
-
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`App is up and running at port ${PORT}`);
 });

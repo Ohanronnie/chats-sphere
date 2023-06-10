@@ -1,38 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import Menu from "./routes/Menu";
-import Signup from "./routes/Register";
-import Login from "./routes/Login";
-import Chats from "./routes/Chats";
-import AddChats from "./routes/AddChat";
-import Home from "./routes/Home";
-import Token from "./routes/VerifyToken";
-import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import App from "./App";
+import { Provider } from "react-redux";
+import store from "./store/index.ts";
+import { SocketProvider } from "./SocketContext";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-function Router() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/">
-          <Route index element={<Menu />} />
-          <Route path="register/signup" element={<Signup />} />
-          <Route path="register/login" element={<Login />} />
-          <Route path="register/token" element={<Token />} />
-          <Route path="home" element={<Home />} />
-          <Route path="chats" element={<Chats />} />
-          <Route path="adduser" element={<AddChats />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
-}
+
 root.render(
   <React.StrictMode>
-    <Router />
+    <Provider store={store}>
+      <SocketProvider>
+        <App />
+      </SocketProvider>
+    </Provider>
   </React.StrictMode>
 );
 

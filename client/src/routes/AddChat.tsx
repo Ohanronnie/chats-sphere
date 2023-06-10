@@ -1,5 +1,28 @@
 import "../assets/css/style.css";
+import { useState, FormEvent, ChangeEvent, useContext } from "react";
+import { SocketContext } from "../SocketContext";
+interface message {
+  to: string;
+  message: string;
+}
 function AddChat() {
+  const [message, setMessage] = useState<message>({
+    to: "",
+    message: "",
+  });
+  const socket = useContext(SocketContext)!;
+  const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    let name = ev.target.name;
+    let value = ev.target.value;
+    setMessage((e) => ({ ...e, [name]: value }));
+  };
+  const handleSubmit = (ev: FormEvent) => {
+    ev.preventDefault();
+    socket.emit("newMessage", {
+      ...message,
+      createdAt: new Date(),
+    });
+  };
   return (
     <div className="bg-slate-100 h-[100vh]">
       <nav className="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-center items-center shadoew-md bg-white">
