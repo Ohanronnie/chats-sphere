@@ -9,7 +9,7 @@ import plus from "../assets/images/plus.svg";
 
 function Home() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  /*const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.user.id);
   useEffect(function () {
     if (token.length < 5) {
@@ -23,7 +23,7 @@ function Home() {
           navigate("register/login");
         });
     }
-  }, []);
+  }, []);*/
   return (
     <div className="bg-slate-100 h-[100vh]">
       <nav className="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-center items-center shadoew-md bg-white">
@@ -69,7 +69,7 @@ function Home() {
           </div>
         </div>
         <div
-          onClick={() => navigate("adduser")}
+          onClick={() => navigate("/adduser")}
           className="fixed w-12 h-12 flex justify-center items-center border border-solid border-slate-300 hover:animate-pulse bg-white left-[50%] translate-x-[-50%] translate-x-[-50%] bottom-[2rem] shadow-lg rounded-full"
         >
           <img src={plus} className="h-10" alt="" />

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { config } from "dotenv";
 config();
-console.log(process.env);
 mongoose
     .connect(process.env.MONGOURL)
     .then((response) => console.log("Connected successfully"));

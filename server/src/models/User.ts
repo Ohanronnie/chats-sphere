@@ -4,7 +4,6 @@ import { IUser } from "../interfaces/user.js";
 import { IMethod } from "../interfaces/user.js";
 import { config } from "dotenv";
 config();
-console.log(process.env);
 mongoose
   .connect(process.env.MONGOURL!)
   .then((response: any) => console.log("Connected successfully"));

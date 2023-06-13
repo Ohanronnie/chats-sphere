@@ -6,8 +6,28 @@ import AddChats from "./routes/AddChat";
 import Home from "./routes/Home";
 import Token from "./routes/VerifyToken";
 import { io, Socket } from "socket.io-client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-const socket: Socket = io("http://localhost:3001");
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import axios from "./utils/axios.ts";
+function ProtectedRoute({ children }: any) {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [valid, setValid] = useState<boolean>(false);
+  useEffect(function () {
+    axios()
+      .post("/api/me")
+      .then((response) => {
+        setValid(true);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setValid(false);
+        setLoading(false);
+      });
+  }, []);
+  //return !loading && valid ? children : <Navigate to="/register/login" replace />
+  if (!loading && valid) return children;
+  else if (!loading && !valid) return <Navigate to="/register/login" replace />;
+}
 export default function Router() {
   return (
     <BrowserRouter>
@@ -17,9 +37,30 @@ export default function Router() {
           <Route path="register/signup" element={<Signup />} />
           <Route path="register/login" element={<Login />} />
           <Route path="register/token" element={<Token />} />
-          <Route path="home" element={<Home />} />
-          <Route path="chats" element={<Chats />} />
-          <Route path="adduser" element={<AddChats />} />
+          <Route
+            path="home"
+            element={
+              <ProtectedRoute>
+                <Home />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="chats/:userId"
+            element={
+              <ProtectedRoute>
+                <Chats />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="adduser"
+            element={
+              <ProtectedRoute>
+                <AddChats />{" "}
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

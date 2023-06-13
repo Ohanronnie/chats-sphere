@@ -1,10 +1,10 @@
 import User from "../models/User.js";
+import Chat from "../models/Chat.js";
 import { SendMail } from "../utils/mail.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
-console.log(process.env);
 console.log(process.env.SECRET_KEY);
 function EmailRegex(email) {
     let regexp = /^[^\s@]+@[^\s@]+\.[a-z]+$/;
@@ -59,7 +59,7 @@ export default class Register {
             else if (EmailExist)
                 return res.status(302).json(message("Email exists"));
             let JwtToken = jwt.sign({ email: email, username: username }, process.env.SECRET_KEY, {
-                expiresIn: "15mins",
+                expiresIn: "5y",
             });
             let UserModel = await User.create({
                 firstName: firstName,
@@ -70,6 +70,10 @@ export default class Register {
                 email: email,
                 confirmCode: JwtToken,
                 isOnline: false,
+            });
+            let ChatModel = await Chat.create({
+                email: email,
+                chats: [],
             });
             let MailSent = await SendMail(email, `${process.env.FRONTENDURL}/register/token?token=${JwtToken}`);
             res

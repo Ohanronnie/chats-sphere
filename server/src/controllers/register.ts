@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { SignupData, LoginData } from "../interfaces/register.js";
 import User from "../models/User.js";
+import Chat from "../models/Chat.js";
 import { IUser, IMethod } from "../interfaces/user.js";
 import { SendMail } from "../utils/mail.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 dotenv.config();
-console.log(process.env);
 console.log(process.env.SECRET_KEY);
 
 function EmailRegex(email: string): boolean {
@@ -72,7 +72,7 @@ export default class Register {
         { email: email, username: username },
         process.env.SECRET_KEY!,
         {
-          expiresIn: "15mins",
+          expiresIn: "5y",
         }
       );
       let UserModel = await User.create({
@@ -84,6 +84,10 @@ export default class Register {
         email: email,
         confirmCode: JwtToken,
         isOnline: false,
+      });
+      let ChatModel = await Chat.create({
+        email: email,
+        chats: [],
       });
       let MailSent = await SendMail(
         email,
