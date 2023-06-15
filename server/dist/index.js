@@ -26,11 +26,11 @@ const config = {
     methods: ["GET", "POST"],
 };
 const PORT = process.env.PORT || 3001;
-app.use("/images", express.static("images"));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
+app.use("/images", express.static("images"));
 app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
