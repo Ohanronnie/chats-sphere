@@ -22,13 +22,13 @@ function Home() {
       .catch(console.log);
   }, []);
   const MessageList = () => {
-    return messageList.map((e) => (
+    return messageList!.map((e) => (
       <div
         onClick={() => navigate(`/chats/${e.id}`)}
         className="flex  mb-2 bg-white p-2 rounded-md items-center"
       >
         <img
-          src={dummy}
+          src={import.meta.env.VITE_IMG_URL + e.cover}
           className="object-cover h-12 w-12 rounded-full"
           alt=""
         />
@@ -57,6 +57,7 @@ function Home() {
             <div className="pr-2 ">
               <img
                 src={plus}
+                onClick={() => navigate("/upload")}
                 className="object-cover h-12 border-black border-2 border-slate-300 w-12 rounded-full"
               />
               <p className="text-slate-500 text-center text-xs">You</p>

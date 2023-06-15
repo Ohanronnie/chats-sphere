@@ -9,6 +9,7 @@ import { IMessage } from "./interfaces/message.js";
 import { defaultConfig } from "./controllers/config.js";
 import register from "./routes/register.js";
 import api from "./routes/chat.js";
+import update from "./routes/update.js";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import jwt from "jsonwebtoken";
@@ -28,6 +29,7 @@ const config: CorsConfig = {
   credentials: true,
 };
 const PORT = process.env.PORT || 3001;
+app.use("/images", express.static("images"));
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
@@ -35,6 +37,7 @@ app.use(cors(config));
 app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
+app.use("/update", update);
 io.on("connection", function (socket: Socket) {
   console.log(`${socket.id} just connected`);
   socket.on("newMessage", async function (data: IMessage) {

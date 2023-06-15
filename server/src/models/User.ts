@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   },
   cover: {
     type: String,
-    default: "/images/OH-IMG.jpg",
+    default: "images/OH-IMG.jpg",
   },
   createdAt: {
     type: Date,

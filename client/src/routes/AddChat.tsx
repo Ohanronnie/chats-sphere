@@ -28,6 +28,7 @@ function AddChat() {
   };
   const handleSubmit = async (ev: FormEvent) => {
     ev.preventDefault();
+    if (message.message.length < 1) return setError("Message too short");
     try {
       let response = await axios().get(`/api/user?email=${message.email}`);
       socket.emit("newMessage", {
@@ -36,6 +37,8 @@ function AddChat() {
         to: response.data.to,
         createdAt: new Date(),
       });
+      setError(null);
+      navigate(`/chats/${response.data.to}`);
     } catch (err: any) {
       if (err.response.status == 500) return navigate("/register/login");
       else if (err.response.status == 302) setError("User doesn't exist");
@@ -61,6 +64,7 @@ function AddChat() {
             onChange={handleChange}
             placeholder="Email Address"
           />
+          <p className="text-red-500 mt-[.3rem] ml-2 text-xs">{error}</p>
 
           <label className="text-slate-500 text-sm">Enter your message</label>
           <input

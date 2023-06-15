@@ -45,14 +45,14 @@ class ChatController {
         token = token?.split(" ")?.[1]?.trim();
         try {
             const payload = jwt.verify(token, process.env.SECRET_KEY);
-            let response = await Chat.findOne({ email: payload.email }).select("chats");
+            let response = (await Chat.findOne({ email: payload.email }).select("chats"));
             let userData = [];
-            let user = await User.findOne({ email: payload.email }).select("_id");
+            let user = (await User.findOne({ email: payload.email }).select("_id"));
             let keyList = [];
             response.chats.forEach((e) => (keyList = Object.keys(e)));
             console.log(keyList);
             let promises = keyList.map(async function (value, index) {
-                let _detail = await User.findOne({ _id: value }).select("firstName lastName cover");
+                let _detail = (await User.findOne({ _id: value }).select("firstName lastName cover"));
                 let _each = response.chats[index][value];
                 let lastMessage = _each[_each.length - 1];
                 userData.push({

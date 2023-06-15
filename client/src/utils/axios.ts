@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 
 export default function instance(): AxiosInstance {
   let instance = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: import.meta.env.VITE_BACK_URL,
     withCredentials: true,
     timeout: 1000 * 60 * 60,
   });

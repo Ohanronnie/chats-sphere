@@ -6,6 +6,8 @@ export interface IChat {
         {
           from: string;
           message: string;
+          createdAt: string;
+          to?: string;
         }
       ];
     }
