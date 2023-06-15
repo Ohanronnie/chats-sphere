@@ -27,7 +27,10 @@ function Chat() {
   useEffect(
     function () {
       socket.on("message", function (data: IMessage) {
-        if (data.to === id.current || data.from === id.current)
+        if (
+          (data.to === id.current && data.from === userId) ||
+          (data.from === id.current && data.to === userId)
+        )
           setMessage((prev: IMessage[]) => [...prev, data]);
         msg.current?.scrollIntoView({ behavior: "smooth" });
       });
