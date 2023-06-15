@@ -14,6 +14,7 @@ import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import jwt from "jsonwebtoken";
 import User from "./models/User.js";
+import fs from "fs";
 import Chat from "./models/Chat.js";
 dotenv.config();
 const app: Application = express();
@@ -34,7 +35,9 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
-app.use("/images", express.static("images"));
+app.get("/images/:id", (req: Request, res: Response) => {
+  fs.createReadStream(`images/${req.params.id}`).pipe(res);
+});
 //app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
