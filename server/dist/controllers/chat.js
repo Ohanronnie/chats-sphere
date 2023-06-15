@@ -49,7 +49,7 @@ class ChatController {
             let userData = [];
             let user = (await User.findOne({ email: payload.email }).select("_id"));
             let keyList = [];
-            response.chats.forEach((e) => (keyList = Object.keys(e)));
+            response.chats.forEach((e) => keyList.push(...Object.keys(e)));
             console.log(keyList);
             let promises = keyList.map(async function (value, index) {
                 let _detail = (await User.findOne({ _id: value }).select("firstName lastName cover"));
@@ -65,7 +65,7 @@ class ChatController {
                 });
             });
             await Promise.all(promises);
-            let sorted = userData.sort((a, b) => a.lastMessage.createdAt - b.lastMessage.createdAt);
+            let sorted = userData.sort((a, b) => new Date(b.lastMessage.createdAt) - new Date(a.lastMessage.createdAt));
             res.status(200).json({
                 id: user._id,
                 list: sorted,
@@ -84,9 +84,10 @@ class ChatController {
             const payload = jwt.verify(token, process.env.SECRET_KEY);
             let response = (await Chat.findOne({ email: payload.email }).select("chats"));
             let details = (await User.findOne({ email: payload.email }).select("firstName lastName"));
-            let json = response.chats.map((e) => {
+            let json = [];
+            response.chats.forEach((e) => {
                 if (e.hasOwnProperty(id)) {
-                    return e[id];
+                    json.push(e[id]);
                 }
             });
             return res.status(200).json(Array.isArray(json)
