@@ -69,7 +69,7 @@ function Login() {
         <button
           type="submit"
           style={{ borderWidth: "1.5px" }}
-          className="text-sm mt-5 text-white rounded-2xl h-9 w-full bg-gradient-to-r from-great-blue-50 to-great-blue-100 hover:bg-slate-200 hover:from-slate-200 hover:to-slate-200 hover:text-slate-500 hover:border-solid hover:border-2 hover:border-great-blue-100"
+          className="text-sm mt-5 text-great-blue-100 rounded-2xl h-9 w-full bg-gradient-to-r from-great-blue-50 to-great-blue-100 hover:bg-slate-200 hover:from-slate-200 hover:to-slate-200 hover:text-slate-500 hover:border-solid hover:border-2 hover:border-great-blue-100"
         >
           Sign In
         </button>
