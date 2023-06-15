@@ -27,6 +27,7 @@ const io = new Server(http, {
 const config: CorsConfig = {
   origin: process.env.FRONTENDURL!,
   credentials: true,
+  methods: ["GET", "POST"],
 };
 const PORT = process.env.PORT || 3001;
 app.use("/images", express.static("images"));
