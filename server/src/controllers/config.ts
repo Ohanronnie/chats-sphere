@@ -3,9 +3,10 @@ export function defaultConfig(
   req: Request,
   res: Response,
   next: NextFunction
-): Response | undefined {
+): Response | void | undefined {
   console.log(req.headers["x-forwarded-for"]);
   let headers = req.headers;
+  if (req.originalUrl.includes("/images")) return next();
   let FrontEndUrl = process.env.FRONTENDURL!;
   console.log(req.socket.remoteAddress, headers);
   if (!headers.origin! || !headers.referer! || !headers["user-agent"]!) {
