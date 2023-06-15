@@ -24,11 +24,9 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <script src="./eruda.js">
-      eruda.init()
-    </script>
     <script>
-      eruda.init();
+      let x = new URL(window.location.href);
+      console.log(x);
     </script>
     <title>React App</title>
   </head>
