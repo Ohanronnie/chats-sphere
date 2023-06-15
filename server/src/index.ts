@@ -15,6 +15,7 @@ import { Server, Socket } from "socket.io";
 import jwt from "jsonwebtoken";
 import User from "./models/User.js";
 import fs from "fs";
+import path from "path";
 import Chat from "./models/Chat.js";
 dotenv.config();
 const app: Application = express();
@@ -36,7 +37,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
 app.get("/images/:id", (req: Request, res: Response) => {
-  fs.createReadStream(`images/${req.params.id}`).pipe(res);
+  fs.createReadStream(path.join(__dirname, `images/${req.params.id}`)).pipe(
+    res
+  );
 });
 //app.use(defaultConfig);
 app.use("/register", register);
