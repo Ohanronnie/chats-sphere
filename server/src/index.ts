@@ -37,7 +37,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
 app.get("/images/:id", (req: Request, res: Response) => {
-  fs.createReadStream(`./images/${req.params.id}`).pipe(res);
+  try {
+    fs.createReadStream(`./images/${req.params.id}`).pipe(res);
+  } catch (err: any) {
+    res.send(err);
+  }
 });
 //app.use(defaultConfig);
 app.use("/register", register);

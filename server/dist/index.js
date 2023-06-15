@@ -10,7 +10,6 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import User from "./models/User.js";
 import fs from "fs";
-import path from "path";
 import Chat from "./models/Chat.js";
 dotenv.config();
 const app = express();
@@ -32,7 +31,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
 app.get("/images/:id", (req, res) => {
-    fs.createReadStream(path.join(__dirname, `.images/${req.params.id}`)).pipe(res);
+    try {
+        fs.createReadStream(`./images/${req.params.id}`).pipe(res);
+    }
+    catch (err) {
+        res.send(err);
+    }
 });
 //app.use(defaultConfig);
 app.use("/register", register);
