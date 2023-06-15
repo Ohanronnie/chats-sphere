@@ -9,7 +9,6 @@ import update from "./routes/update.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import User from "./models/User.js";
-import fs from "fs";
 import Chat from "./models/Chat.js";
 dotenv.config();
 const app = express();
@@ -30,14 +29,14 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
-app.get("/images/:id", (req, res) => {
-    try {
-        fs.createReadStream(`./images/${req.params.id}`).pipe(res);
-    }
-    catch (err) {
-        res.send(err);
-    }
-});
+/*app.get('/images/:id',(req: Request,res: Response) => {
+  try{
+  fs.createReadStream(`./images/${req.params.id}`).pipe(res)
+  } catch(err: any){
+    res.send(err)
+  }
+});*/
+app.use("/images", express.static("./images"));
 //app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);

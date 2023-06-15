@@ -36,13 +36,14 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
-app.get("/images/:id", (req: Request, res: Response) => {
-  try {
-    fs.createReadStream(`./images/${req.params.id}`).pipe(res);
-  } catch (err: any) {
-    res.send(err);
+/*app.get('/images/:id',(req: Request,res: Response) => {
+  try{
+  fs.createReadStream(`./images/${req.params.id}`).pipe(res)
+  } catch(err: any){
+    res.send(err)
   }
-});
+});*/
+app.use("/images", express.static("./images"));
 //app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
