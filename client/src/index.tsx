@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-
+document.body.className = "bg-slate-100";
 root.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -22,15 +22,18 @@ function Chat() {
   const [defMessage, setDefMessage] = useState<string>("");
   const socket = useContext(SocketContext)!;
   const id = useRef<null | string>(null);
-  const msg = useRef<HTMLElement | null>(null);
+  const msg = useRef<HTMLDivElement | null>(null);
   const { userId } = useParams();
   useEffect(
     function () {
       socket.on("message", function (data: IMessage) {
         if (data.to === id.current || data.from === id.current)
-          setMessage((prev: IMessage) => [...prev, data]);
+          setMessage((prev: IMessage[]) => [...prev, data]);
         msg.current?.scrollIntoView({ behavior: "smooth" });
       });
+      return () => {
+        socket.off("message");
+      };
     },
     [socket]
   );
@@ -66,7 +69,7 @@ function Chat() {
     let min = _date.getMinutes().toString().padStart(2, "0");
     return `${hour}:${min}`;
   };
-  const FromMessage = (text: string, date: string | Date) => {
+  const FromMessage = (text: string, date: string) => {
     return (
       <>
         <div
@@ -82,7 +85,7 @@ function Chat() {
       </>
     );
   };
-  const ToMessage = (text: string, date: string | Date) => {
+  const ToMessage = (text: string, date: string) => {
     return (
       <>
         <div
@@ -114,7 +117,9 @@ function Chat() {
         <p className="uppercase text-slate-500">{name}</p>
       </nav>
       <section className="ml-2 mr-2 pt-[5rem]">
-        <div className="ml-2">{name && <MapMessage />}</div>
+        <div className="ml-2 bg-slate-100 h-[70vh] overflow-y-scroll">
+          {name && MapMessage()}
+        </div>
         <form
           className="bg-white ml-2 p-2 flex rounded-md w-11/12 mr-2 fixed bottom-0"
           onSubmit={handleSubmit}

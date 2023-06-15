@@ -45,10 +45,34 @@ class ChatController {
         token = token?.split(" ")?.[1]?.trim();
         try {
             const payload = jwt.verify(token, process.env.SECRET_KEY);
-            let response = (await Chat.findOne({ email: payload.email }).select("chats"));
-            return res.status(200).json(response.chats);
+            let response = await Chat.findOne({ email: payload.email }).select("chats");
+            let userData = [];
+            let user = await User.findOne({ email: payload.email }).select("_id");
+            let keyList = [];
+            response.chats.forEach((e) => (keyList = Object.keys(e)));
+            console.log(keyList);
+            let promises = keyList.map(async function (value, index) {
+                let _detail = await User.findOne({ _id: value }).select("firstName lastName cover");
+                let _each = response.chats[index][value];
+                let lastMessage = _each[_each.length - 1];
+                userData.push({
+                    lastMessage: lastMessage.message,
+                    createdAt: lastMessage.createdAt,
+                    firstName: _detail.firstName,
+                    lastName: _detail.lastName,
+                    cover: _detail.cover,
+                    id: _detail._id,
+                });
+            });
+            await Promise.all(promises);
+            let sorted = userData.sort((a, b) => a.lastMessage.createdAt - b.lastMessage.createdAt);
+            res.status(200).json({
+                id: user._id,
+                list: sorted,
+            });
         }
         catch (err) {
+            console.log(err);
             return res.status(500).json([]);
         }
     }
