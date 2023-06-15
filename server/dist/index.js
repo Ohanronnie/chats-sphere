@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors(config));
 app.get("/images/:id", (req, res) => {
-    fs.createReadStream(path.join(__dirname, `images/${req.params.id}`)).pipe(res);
+    fs.createReadStream(path.join(__dirname, `.images/${req.params.id}`)).pipe(res);
 });
 //app.use(defaultConfig);
 app.use("/register", register);
