@@ -32,7 +32,7 @@ function Chat() {
           (data.from === id.current && data.to === userId)
         )
           setMessage((prev: IMessage[]) => [...prev, data]);
-        msg.current?.scrollIntoView({ behavior: "smooth" });
+        msg.current?.scrollIntoView(true);
       });
       return () => {
         socket.off("message");
@@ -46,7 +46,7 @@ function Chat() {
       .then(({ data }) => {
         setName(data.name);
         setMessage(data.message);
-        msg.current?.scrollIntoView({ behavior: "smooth" });
+        msg.current?.scrollIntoView(true);
         id.current = data.id;
       })
       .catch(console.log);
