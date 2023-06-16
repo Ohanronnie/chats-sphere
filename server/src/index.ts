@@ -44,7 +44,7 @@ app.use(cors(config));
   }
 });*/
 app.use("/images", express.static("./images"));
-app.use(defaultConfig);
+//app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
 app.use("/update", update);

@@ -84,7 +84,7 @@ class ChatController {
         try {
             const payload = jwt.verify(token, process.env.SECRET_KEY);
             let response = (await Chat.findOne({ email: payload.email }).select("chats"));
-            let details = (await User.findOne({ email: payload.email }).select("firstName lastName"));
+            let details = (await User.findOne({ _id: id }).select("firstName lastName"));
             let json = [];
             response.chats.forEach((e) => {
                 if (e.hasOwnProperty(id)) {
