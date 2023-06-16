@@ -114,7 +114,7 @@ class ChatController {
       let response = (await Chat.findOne({ email: payload.email }).select(
         "chats"
       ))!;
-      let details = (await User.findOne({ email: payload.email }).select(
+      let details = (await User.findOne({ _id: id }).select(
         "firstName lastName"
       ))!;
       let json: any[] = [];
