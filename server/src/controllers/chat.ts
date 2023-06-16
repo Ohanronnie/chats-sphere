@@ -127,7 +127,7 @@ class ChatController {
       return res.status(200).json(
         Array.isArray(json)
           ? {
-              id: details._id,
+              id: payload._id,
               name: `${details.firstName} ${details.lastName}`,
               message: json[0],
             }

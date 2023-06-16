@@ -47,9 +47,7 @@ io.on("connection", function (socket) {
         let { from, to, createdAt, message } = data;
         console.log(data);
         let sender = (await User.findOne({ _id: from }).select("email"));
-        console.log(sender, from);
         let receiver = (await User.findOne({ _id: to }).select("email"));
-        console.log(receiver, to);
         let senderChat = (await Chat.findOne({ email: sender.email }));
         let receiverChat = (await Chat.findOne({ email: receiver.email }));
         if (senderChat.chats.length === 0 ||
