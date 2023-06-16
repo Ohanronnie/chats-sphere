@@ -3,7 +3,6 @@ import bodyparser from "body-parser";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { defaultConfig } from "./controllers/config.js";
 import register from "./routes/register.js";
 import api from "./routes/chat.js";
 import update from "./routes/update.js";
@@ -38,7 +37,7 @@ app.use(cors(config));
   }
 });*/
 app.use("/images", express.static("./images"));
-app.use(defaultConfig);
+//app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
 app.use("/update", update);
@@ -48,7 +47,9 @@ io.on("connection", function (socket) {
         let { from, to, createdAt, message } = data;
         console.log(data);
         let sender = (await User.findOne({ _id: from }).select("email"));
+        console.log(sender, from);
         let receiver = (await User.findOne({ _id: to }).select("email"));
+        console.log(receiver, to);
         let senderChat = (await Chat.findOne({ email: sender.email }));
         let receiverChat = (await Chat.findOne({ email: receiver.email }));
         if (senderChat.chats.length === 0 ||

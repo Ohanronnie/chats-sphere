@@ -243,13 +243,15 @@ export default function Login() {
           Sign In
         </button>
       </div>
-      {success && (
+      {
+        success && handleClick() /*(
         <SuccessMessage
           h1="Success"
-          p="Your form has been submitted successfully, click the link in your mail to verify your account"
+          p="You have successfully signed up on chats-sphere.."
           button="true"
         />
-      )}
+      )*/
+      }
       {!success && loading && <SuccessMessage div="true" />}
     </>
   );

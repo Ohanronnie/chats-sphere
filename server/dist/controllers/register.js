@@ -66,13 +66,13 @@ export default class Register {
                 lastName: lastName,
                 username: username,
                 password: password,
-                status: "Pending",
-                email: email,
+                status: "Active",
+                email: email.toLowerCase(),
                 confirmCode: JwtToken,
                 isOnline: false,
             });
             let ChatModel = await Chat.create({
-                email: email,
+                email: email.toLowerCase(),
                 chats: [],
             });
             let MailSent = await SendMail(email, `${process.env.FRONTENDURL}/register/token?token=${JwtToken}`);
