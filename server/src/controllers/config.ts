@@ -8,7 +8,7 @@ export function defaultConfig(
   let headers = req.headers;
   if (req.originalUrl.includes("/images")) return next();
   let FrontEndUrl = process.env.FRONTENDURL!;
-  console.log(req.socket.remoteAddress, headers);
+  console.log(req.socket.remoteAddress);
   if (!headers.origin! || !headers.referer! || !headers["user-agent"]!) {
     return res.status(200).json({
       message: "No permission to access this source",
