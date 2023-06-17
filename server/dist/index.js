@@ -3,6 +3,7 @@ import bodyparser from "body-parser";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { defaultConfig } from "./controllers/config.js";
 import register from "./routes/register.js";
 import api from "./routes/chat.js";
 import update from "./routes/update.js";
@@ -37,7 +38,7 @@ app.use(cors(config));
   }
 });*/
 app.use("/images", express.static("./images"));
-//app.use(defaultConfig);
+app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
 app.use("/update", update);

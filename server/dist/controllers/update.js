@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import cloudinary from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 class Update {
     constructor() { }
@@ -17,16 +18,18 @@ class Update {
     static async image(req, res) {
         let file = req.file;
         let path;
+        const upload = async (path) => await cloudinary(path, "Image");
         if (file)
             path = req.file.path;
         else
             return res.status(401).json(null);
+        const url = await upload(path);
         try {
             let token = req.headers["authorisation"];
             token = token?.split(" ")?.[1]?.trim();
             const payload = jwt.verify(token, process.env.SECRET_KEY);
             const response = (await User.findOne({ email: payload.email }));
-            response.cover = path;
+            response.cover = url.url;
             await response.save();
             console.log(response);
             res.status(200).json(null);
