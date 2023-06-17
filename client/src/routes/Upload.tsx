@@ -40,7 +40,7 @@ export default function Upload() {
       .then(() => navigate("/home"));
   };
   return (
-    <div>
+    <div className="bg-slate-100">
       <nav className="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-center items-center shadoew-md bg-white">
         <p className="uppercase text-slate-500">Change Profile Picture</p>
       </nav>
