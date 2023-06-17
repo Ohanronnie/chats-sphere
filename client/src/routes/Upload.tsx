@@ -46,7 +46,11 @@ export default function Upload() {
       </nav>
       <section className="ml-4 mr-4 pt-[5rem]">
         <img
-          src={imgData || import.meta.env.VITE_IMG_URL + dummy}
+          src={
+            imgData || dummy?.startsWith("images")
+              ? import.meta.env.VITE_IMG_URL + dummy
+              : dummy
+          }
           className="h-72 object-cover w-full border border-slate-500 border-dashed"
         />
         <label
