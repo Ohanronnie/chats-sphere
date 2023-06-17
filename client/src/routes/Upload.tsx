@@ -47,9 +47,9 @@ export default function Upload() {
       <section className="ml-4 mr-4 pt-[5rem]">
         <img
           src={
-            imgData || dummy?.startsWith("images")
-              ? import.meta.env.VITE_IMG_URL + dummy
-              : dummy
+            imgData || dummy.startsWith("http://res.")
+              ? dummy
+              : `${import.meta.env.VITE_IMG_URL}${dummy}`
           }
           className="h-72 object-cover w-full border border-slate-500 border-dashed"
         />
