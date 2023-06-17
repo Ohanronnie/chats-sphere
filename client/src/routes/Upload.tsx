@@ -14,6 +14,7 @@ export default function Upload() {
       if (file) {
         reader.onloadend = function (ev: any) {
           setImgData(ev.target!.result);
+          console.log(ev.target.result);
         };
         reader.readAsDataURL(file);
       }
@@ -47,7 +48,9 @@ export default function Upload() {
       <section className="ml-4 mr-4 pt-[5rem]">
         <img
           src={
-            imgData || dummy.startsWith("http://res.")
+            imgData
+              ? imgData
+              : dummy.startsWith("http://res.")
               ? dummy
               : `${import.meta.env.VITE_IMG_URL}${dummy}`
           }
