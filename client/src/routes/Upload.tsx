@@ -14,7 +14,6 @@ export default function Upload() {
       if (file) {
         reader.onloadend = function (ev: any) {
           setImgData(ev.target!.result);
-          console.log(ev.target.result);
         };
         reader.readAsDataURL(file);
       }
