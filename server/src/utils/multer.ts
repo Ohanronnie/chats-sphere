@@ -2,7 +2,7 @@ import multer from "multer";
 // Set storage engine for Multer
 const storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, "images/"); // Destination folder to save the uploaded files
+    cb(null, "./images/"); // Destination folder to save the uploaded files
   },
   filename: function (req: any, file: any, cb: any) {
     cb(null, `CHATS-SPHERE-IMG-${Date.now()}.${file.mimetype.split("/")[1]}`); // Use the original file name as the saved file name
