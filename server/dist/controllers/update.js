@@ -31,12 +31,27 @@ class Update {
             const response = (await User.findOne({ email: payload.email }));
             response.cover = url.url;
             await response.save();
-            console.log(response);
-            res.status(200).json(null);
+            res.status(200).json({ url: url.url });
         }
         catch (err) {
             console.log(err);
-            res.status(500).json(null);
+            res.status(500).json({ url: null });
+        }
+    }
+    static async messageImage(req, res) {
+        try {
+            let file = req.file;
+            let path;
+            const upload = async (path) => await cloudinary(path, "Image");
+            if (file)
+                path = req.file.path;
+            else
+                return res.status(401).json(null);
+            const url = await upload(path);
+            res.status(200).json({ url: url.url });
+        }
+        catch (err) {
+            return res.status(500).json(null);
         }
     }
 }

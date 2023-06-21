@@ -115,7 +115,7 @@ class ChatController {
         "chats"
       ))!;
       let details = (await User.findOne({ _id: id }).select(
-        "firstName lastName"
+        "firstName lastName cover isOnline"
       ))!;
       let json: any[] = [];
       response.chats.forEach((e: any) => {
@@ -128,6 +128,7 @@ class ChatController {
         Array.isArray(json)
           ? {
               id: payload._id,
+              cover: details.cover,
               name: `${details.firstName} ${details.lastName}`,
               message: json[0],
             }

@@ -84,7 +84,7 @@ class ChatController {
         try {
             const payload = jwt.verify(token, process.env.SECRET_KEY);
             let response = (await Chat.findOne({ email: payload.email }).select("chats"));
-            let details = (await User.findOne({ _id: id }).select("firstName lastName"));
+            let details = (await User.findOne({ _id: id }).select("firstName lastName cover isOnline"));
             let json = [];
             response.chats.forEach((e) => {
                 if (e.hasOwnProperty(id)) {
@@ -94,6 +94,7 @@ class ChatController {
             return res.status(200).json(Array.isArray(json)
                 ? {
                     id: payload._id,
+                    cover: details.cover,
                     name: `${details.firstName} ${details.lastName}`,
                     message: json[0],
                 }

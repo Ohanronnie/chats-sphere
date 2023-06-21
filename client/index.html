@@ -12,10 +12,14 @@
       let x = new URL(window.location.href);
       console.log(x);
     </script>
+    <script src="./eruda.js"></script>
+    <script>
+      if (x.port == 3000) eruda.init();
+    </script>
     <title>Chats Sphere</title>
   </head>
 
-  <body style="rgb(241 245 249 / 1)">
+  <body style="background-color: rgb(241 245 249 / 1)">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>

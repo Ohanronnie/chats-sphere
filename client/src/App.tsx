@@ -6,6 +6,7 @@ import AddChats from "./routes/AddChat";
 import Home from "./routes/Home";
 import Token from "./routes/VerifyToken";
 import Upload from "./routes/Upload";
+import ImageUpload from "./routes/UploadImage";
 import { io, Socket } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -67,6 +68,14 @@ export default function Router() {
             element={
               <ProtectedRoute>
                 <Upload />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="imageupload/:to/:from"
+            element={
+              <ProtectedRoute>
+                <ImageUpload />{" "}
               </ProtectedRoute>
             }
           />
