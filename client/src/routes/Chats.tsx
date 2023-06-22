@@ -24,11 +24,15 @@ function Chat() {
   const [name, setName] = useState<string | null>(null);
   const [cover, setCover] = useState<string | null>(null);
   const [defMessage, setDefMessage] = useState<string>("");
+  const [active, setActive] = useState<boolean>(false);
   const socket = useContext(SocketContext)!;
   const id = useRef<null | string>(null);
   const msg = useRef<HTMLDivElement | null>(null);
   const { userId } = useParams();
   const navigate = useNavigate();
+  useEffect(function () {
+    socket.emit("active", { token: localStorage.getItem("token") });
+  }, []);
   useEffect(
     function () {
       socket.on("message", function (data: IMessage) {
@@ -51,8 +55,8 @@ function Chat() {
       .then(({ data }) => {
         setName(data.name);
         setCover(data.cover);
-        console.log(data.cover);
         setMessage(data.message);
+        setActive(data.online);
         msg.current?.scrollIntoView({ behavior: "smooth" });
         id.current = data.id;
       })
@@ -163,11 +167,15 @@ function Chat() {
           />
         )}
         <p class="uppercase text-slate-500">{name}</p>
-        <img src={circle} class="ml-4 h-3 w-3 text-slate-500" />
+        {active ? (
+          <img src={circle} class="ml-4 h-3 w-3 text-slate-500" />
+        ) : (
+          <img class="ml-4 h-3 w-3 text-slate-500" />
+        )}
       </nav>
       <section className="ml-2 mr-2 pt-[5rem]">
         <div className="ml-2 bg-slate-100 h-[70vh] overflow-y-scroll">
-          {name && MapMessage()}
+          {message && MapMessage()}
         </div>
         <form
           className="bg-white -ml-2 p-2 flex rounded-md w-full mr-2 fixed bottom-0"

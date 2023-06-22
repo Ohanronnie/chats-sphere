@@ -129,6 +129,7 @@ class ChatController {
           ? {
               id: payload._id,
               cover: details.cover,
+              online: details.isOnline,
               name: `${details.firstName} ${details.lastName}`,
               message: json[0],
             }

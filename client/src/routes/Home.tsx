@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { RootState, setId } from "../store/slice.ts";
 import { useDispatch, useSelector } from "react-redux";
+import { SocketContext } from "../SocketContext";
 import axios from "../utils/axios.ts";
 import "../assets/css/style.css";
 import dummy from "../assets/images/image.jpg";
@@ -12,6 +13,10 @@ function Home() {
   const details = useRef<null | any>(null);
   const navigate = useNavigate();
   const id = useRef<null | string>(null);
+  const socket = useContext(SocketContext)!;
+  useEffect(function () {
+    socket.emit("active", { token: localStorage.getItem("token") });
+  }, []);
   useEffect(function () {
     axios()
       .post("/api/messagelist")

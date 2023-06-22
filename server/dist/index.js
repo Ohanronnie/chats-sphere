@@ -9,6 +9,8 @@ import api from "./routes/chat.js";
 import update from "./routes/update.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import jwt from "jsonwebtoken";
+import User from "./models/User.js";
 import { ChatMessage } from "./controllers/chatMessage.js";
 dotenv.config();
 const app = express();
@@ -53,7 +55,23 @@ io.on("connection", function (socket) {
             return;
         }
     });
-    io.on("disconnect", function () {
+    socket.on("active", async (id) => {
+        try {
+            let token = id.token;
+            const payload = jwt.verify(token, process.env.SECRET_KEY);
+            const _user = await User.findOne({ _id: payload._id });
+            _user.isOnline = true;
+            _user.save();
+            socket._userID = payload._id;
+        }
+        catch (err) { }
+    });
+    socket.on("disconnect", async function () {
+        if (socket._userID) {
+            const _user = await User.findOne({ _id: socket._userID });
+            _user.isOnline = false;
+            _user.save();
+        }
         console.log(`${socket.id} just disconnected`);
     });
 });

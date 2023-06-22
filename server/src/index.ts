@@ -11,7 +11,7 @@ import register from "./routes/register.js";
 import api from "./routes/chat.js";
 import update from "./routes/update.js";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { Server, Socket as _Socket } from "socket.io";
 import jwt from "jsonwebtoken";
 import User from "./models/User.js";
 import fs from "fs";
@@ -49,6 +49,9 @@ app.use(defaultConfig);
 app.use("/register", register);
 app.use("/api", api);
 app.use("/update", update);
+interface Socket extends _Socket {
+  _userID?: string;
+}
 io.on("connection", function (socket: Socket) {
   console.log(`${socket.id} just connected`);
   socket.on("newMessage", async function (data: IMessage) {
@@ -60,7 +63,26 @@ io.on("connection", function (socket: Socket) {
       return;
     }
   });
-  io.on("disconnect", function () {
+  socket.on("active", async (id: { token: string }) => {
+    try {
+      let token = id.token;
+      interface IPayload {
+        email: string;
+        _id: string;
+      }
+      const payload = jwt.verify(token, process.env.SECRET_KEY!) as IPayload;
+      const _user = await User.findOne({ _id: payload._id });
+      _user!.isOnline = true;
+      _user!.save();
+      socket._userID = payload._id;
+    } catch (err: any) {}
+  });
+  socket.on("disconnect", async function () {
+    if (socket._userID) {
+      const _user = await User.findOne({ _id: socket._userID });
+      _user!.isOnline = false;
+      _user!.save();
+    }
     console.log(`${socket.id} just disconnected`);
   });
 });
