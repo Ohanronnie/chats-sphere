@@ -2,7 +2,6 @@ import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import axios from "../utils/axios.ts";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/register.css";
-document.body.style.backgroundColor = "#FFFFFF";
 interface IValue {
   email: string;
   password: string;
