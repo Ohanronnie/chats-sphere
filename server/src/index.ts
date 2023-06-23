@@ -75,6 +75,7 @@ io.on("connection", function (socket: Socket) {
       _user!.isOnline = true;
       _user!.save();
       socket._userID = payload._id;
+      io.emit("online", payload._id);
     } catch (err: any) {}
   });
   socket.on("disconnect", async function () {
@@ -82,6 +83,7 @@ io.on("connection", function (socket: Socket) {
       const _user = await User.findOne({ _id: socket._userID });
       _user!.isOnline = false;
       _user!.save();
+      io.emit("offline", socket._userID);
     }
     console.log(`${socket.id} just disconnected`);
   });

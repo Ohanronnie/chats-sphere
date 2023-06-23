@@ -31,6 +31,7 @@ function dataURLtoBlob(dataURL) {
 export default function UploadImage() {
   const [blob, setBlob] = useState<null | Blob>(null);
   const [message, setMessage] = useState<string>("");
+  const [disabled, setDisabled] = useState<boolean>(false);
   const { to, from } = useParams();
   const navigate = useNavigate();
   const socket = useContext(SocketContext)!;
@@ -41,6 +42,7 @@ export default function UploadImage() {
   }, []);
   const handleSubmit = (ev: FormEvent) => {
     ev.preventDefault();
+    setDisabled(true);
     let formdata = new FormData();
     formdata.append("image", blob);
     axios()
@@ -59,7 +61,7 @@ export default function UploadImage() {
           url: data.url,
         });
         localStorage.removeItem("image");
-        navigate(`/chats/${to}`);
+        window.location = `/chats/${to}`;
       })
       .catch(console.log);
   };
@@ -78,10 +80,12 @@ export default function UploadImage() {
           placeholder="Say something about this picture...."
           value={message}
           onChange={(e: any) => setMessage(e.target.value)}
+          disabled={disabled}
           type="text"
         />
         <button
           className="bg-slate-100 break-words flex items-center justify-center text-slate-500 ml-2 rounded-md h-10 w-10"
+          disabled={disabled}
           type="submit"
         >
           <img className="w-6 h-8" src={mail} />

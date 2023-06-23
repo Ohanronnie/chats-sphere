@@ -63,6 +63,7 @@ io.on("connection", function (socket) {
             _user.isOnline = true;
             _user.save();
             socket._userID = payload._id;
+            io.emit("online", payload._id);
         }
         catch (err) { }
     });
@@ -71,6 +72,7 @@ io.on("connection", function (socket) {
             const _user = await User.findOne({ _id: socket._userID });
             _user.isOnline = false;
             _user.save();
+            io.emit("offline", socket._userID);
         }
         console.log(`${socket.id} just disconnected`);
     });

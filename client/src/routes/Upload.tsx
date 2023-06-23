@@ -6,6 +6,7 @@ export default function Upload() {
   const [file, setFile] = useState<null | Blob>(null);
   const [imgData, setImgData] = useState<string>("");
   const [dummy, setDummy] = useState<string>("/images/dummy.jpg");
+  const [disabled, setDisabled] = useState<boolean>(false);
   const id = useRef<null | HTMLImageElement>(null);
   const navigate = useNavigate();
   const reader = new FileReader();
@@ -28,6 +29,7 @@ export default function Upload() {
   }, []);
   const handleSubmit = () => {
     if (!file) return;
+    setDisabled(true);
     let formdata = new FormData();
     formdata.append("image", file);
     axios()
@@ -70,9 +72,11 @@ export default function Upload() {
           name="image"
           accept="image/*"
           className="hidden"
+          disabled={disabled}
         />
         <button
           onClick={handleSubmit}
+          disabled={disabled}
           className="h-10 mt-2 hover:border-0 hover:text-white hover:bg-slate-500 text-sm rounded-md w-full bg-slate-200 border border-slate-500 border-solid text-slate-500 "
         >
           Save

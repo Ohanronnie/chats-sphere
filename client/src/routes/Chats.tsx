@@ -45,8 +45,20 @@ function Chat() {
           setMessage((prev: IMessage[]) => [...prev, data]);
         msg.current?.scrollIntoView({ behavior: "smooth" });
       });
+      socket.on("online", function (_id: string) {
+        if (_id === userId) {
+          setActive(true);
+        }
+      });
+      socket.on("offline", function (_id: string) {
+        if (_id === userId) {
+          setActive(false);
+        }
+      });
       return () => {
         socket.off("message");
+        socket.off("online");
+        socket.off("offline");
       };
     },
     [socket]
