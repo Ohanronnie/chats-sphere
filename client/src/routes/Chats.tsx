@@ -2,6 +2,8 @@ import "../assets/css/style.css";
 import mail from "../assets/images/mail.svg";
 import circle from "../assets/images/circle.svg";
 import camera from "../assets/images/camera.svg";
+import leftArrow from "../assets/images/arrow-left.svg";
+
 import axios from "../utils/axios.ts";
 import {
   useState,
@@ -154,7 +156,12 @@ function Chat() {
   };
   return (
     <div className="bg-slate-100 h-[100vh]">
-      <nav class="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-around lowercase items-center shadoew-md bg-white">
+      <nav className="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-around lowercase items-center shadoew-md bg-white">
+        <img
+          src={leftArrow}
+          onClick={() => navigate("/home")}
+          className="h-4 w-4"
+        />
         {cover && (
           <img
             src={
@@ -162,15 +169,15 @@ function Chat() {
                 ? import.meta.env.VITE_IMG_URL + cover
                 : cover
             }
-            class="object-cover h-10 w-10 rounded-full"
+            className="object-cover h-8 w-8 rounded-full"
             alt=""
           />
         )}
-        <p class="uppercase text-slate-500">{name}</p>
+        <p className="uppercase text-sm w-16 truncate text-slate-500">{name}</p>
         {active ? (
-          <img src={circle} class="ml-4 h-3 w-3 text-slate-500" />
+          <img src={circle} className="ml-4 h-3 w-3 text-slate-500" />
         ) : (
-          <img class="ml-4 h-3 w-3 text-slate-500" />
+          <img className="ml-4 h-3 w-3 text-slate-500" />
         )}
       </nav>
       <section className="ml-2 mr-2 pt-[5rem]">

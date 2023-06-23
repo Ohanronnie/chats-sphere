@@ -35,7 +35,9 @@ export default function UploadImage() {
   const navigate = useNavigate();
   const socket = useContext(SocketContext)!;
   useEffect(function () {
-    setBlob(dataURLtoBlob(localStorage.getItem("image")));
+    if (localStorage.getItem("image"))
+      setBlob(dataURLtoBlob(localStorage.getItem("image")));
+    else navigate(`/chats/${to}`);
   }, []);
   const handleSubmit = (ev: FormEvent) => {
     ev.preventDefault();
