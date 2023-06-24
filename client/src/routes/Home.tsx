@@ -43,10 +43,7 @@ function Home() {
   useEffect(
     function () {
       socket.on("message", (data: IMessage) => {
-        if (
-          (data.to === id.current && data.from === userId) ||
-          (data.from === id.current && data.to === userId)
-        ) {
+        if (data.to === id.current || data.from === id.current) {
           setMessageList((prev: IMessageList[]) => {
             let newList: IMessageList[] = [];
             prev.forEach((value: IMessageList, index: number) => {
