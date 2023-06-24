@@ -7,9 +7,23 @@ import axios from "../utils/axios.ts";
 import "../assets/css/style.css";
 import dummy from "../assets/images/image.jpg";
 import plus from "../assets/images/plus.svg";
-
+interface IMessage {
+  from: string;
+  to: string;
+  message: string;
+  createdAt: string;
+}
+interface IMessageList {
+  lastMessage: string;
+  cover: string;
+  createdAt: string;
+  firstName: string;
+  lastName: string;
+  id: string;
+  isOnline?: string;
+}
 function Home() {
-  const [messageList, setMessageList] = useState<any[] | null>(null);
+  const [messageList, setMessageList] = useState<IMessageList[] | null>(null);
   const details = useRef<null | any>(null);
   const navigate = useNavigate();
   const id = useRef<null | string>(null);
@@ -26,6 +40,36 @@ function Home() {
       })
       .catch(console.log);
   }, []);
+  useEffect(
+    function () {
+      socket.on("message", (data: IMessage) => {
+        if (
+          (data.to === id.current && data.from === userId) ||
+          (data.from === id.current && data.to === userId)
+        ) {
+          setMessageList((prev: IMessageList[]) => {
+            let newList: IMessageList[] = [];
+            prev.forEach((value: IMessageList, index: number) => {
+              if (value.id === data.to || value.id === data.from) {
+                let newMessage: IMessageList = {
+                  ...value,
+                  lastMessage: data.message,
+                  createdAt: data.createdAt,
+                };
+                newList.push(newMessage);
+                prev.splice(index, 1);
+              }
+            });
+            return [...newList, ...prev];
+          });
+        }
+      });
+      return () => {
+        socket.off("message");
+      };
+    },
+    [socket]
+  );
   const MessageList = () => {
     return messageList!.map((e) => (
       <div
