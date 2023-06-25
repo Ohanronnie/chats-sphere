@@ -3,7 +3,7 @@ import { useState, useEffect, useContext, FormEvent } from "react";
 import mail from "../assets/images/mail.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { SocketContext } from "../SocketContext";
-function dataURLtoBlob(dataURL) {
+function dataURLtoBlob(dataURL: string) {
   // Split the data URL into the data type and base64 data
   let [dataType, base64Data] = dataURL.split(",");
 
@@ -29,7 +29,7 @@ function dataURLtoBlob(dataURL) {
 }
 
 export default function UploadImage() {
-  const [blob, setBlob] = useState<null | Blob>(null);
+  const [blob, setBlob] = useState<Blob | null>(null);
   const [message, setMessage] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(false);
   const { to, from } = useParams();
@@ -37,14 +37,14 @@ export default function UploadImage() {
   const socket = useContext(SocketContext)!;
   useEffect(function () {
     if (localStorage.getItem("image"))
-      setBlob(dataURLtoBlob(localStorage.getItem("image")));
+      setBlob(dataURLtoBlob(localStorage.getItem("image") as string));
     else navigate(`/chats/${to}`);
   }, []);
   const handleSubmit = (ev: FormEvent) => {
     ev.preventDefault();
     setDisabled(true);
     let formdata = new FormData();
-    formdata.append("image", blob);
+    formdata.append("image", blob as Blob);
     axios()
       .post("/update/message", formdata, {
         headers: {
@@ -61,14 +61,14 @@ export default function UploadImage() {
           url: data.url,
         });
         localStorage.removeItem("image");
-        window.location = `/chats/${to}`;
+        window.location = `/chats/${to}` as any;
       })
       .catch(console.log);
   };
   return (
     <section className="m-2">
       <img
-        src={localStorage.getItem("image")}
+        src={localStorage.getItem("image") as string}
         className="w-full rounded-sm object-cover h-[28rem]"
       />
       <form

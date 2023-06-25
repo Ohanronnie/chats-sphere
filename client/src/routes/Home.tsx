@@ -44,9 +44,9 @@ function Home() {
     function () {
       socket.on("message", (data: IMessage) => {
         if (data.to === id.current || data.from === id.current) {
-          setMessageList((prev: IMessageList[]) => {
+          setMessageList((prevState: IMessageList[] | any): any => {
             let newList: IMessageList[] = [];
-            prev.forEach((value: IMessageList, index: number) => {
+            prevState.forEach((value: IMessageList, index: number) => {
               if (value.id === data.to || value.id === data.from) {
                 let newMessage: IMessageList = {
                   ...value,
@@ -54,10 +54,10 @@ function Home() {
                   createdAt: data.createdAt,
                 };
                 newList.push(newMessage);
-                prev.splice(index, 1);
+                prevState.splice(index, 1);
               }
             });
-            return [...newList, ...prev];
+            return [...newList, ...prevState];
           });
         }
       });

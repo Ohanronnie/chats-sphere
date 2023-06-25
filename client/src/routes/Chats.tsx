@@ -20,6 +20,7 @@ interface IMessage {
   to: string;
   message: string;
   createdAt: string;
+  url?: string;
 }
 function Chat() {
   const [message, setMessage] = useState<IMessage[]>([]);
@@ -123,7 +124,7 @@ function Chat() {
           {image && (
             <img
               src={image}
-              class="object-cover rounded-sm w-full max-h-[20rem]"
+              className="object-cover rounded-sm w-full max-h-[20rem]"
             />
           )}
           <p className="text-sm font-base w-full break-words text-slate-500">
@@ -145,7 +146,7 @@ function Chat() {
           {image && (
             <img
               src={image}
-              class="object-cover rounded-sm w-full max-h-[20rem]"
+              className="object-cover rounded-sm w-full max-h-[20rem]"
             />
           )}
           <p className="text-sm font-base w-full break-words text-slate-500">
