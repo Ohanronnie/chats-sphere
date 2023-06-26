@@ -7,6 +7,7 @@ import Home from "./routes/Home";
 import Token from "./routes/VerifyToken";
 import Upload from "./routes/Upload";
 import ImageUpload from "./routes/UploadImage";
+import "./assets/css/loader.css";
 import { io, Socket } from "socket.io-client";
 import { useEffect, useState, ReactNode } from "react";
 import {
@@ -33,17 +34,16 @@ function ProtectedRoute(): any {
       });
   }, []);
   //return !loading && valid ? children : <Navigate to="/register/login" replace /
-  if(loading) return (
-   <>
-     <div class="h-[100vh] flex justify-center items-center">
-     <div class="w-10 h-10 roll border-4 border-l-slate-400 border-l-solid rounded-full border-solid border-white">
-    
-  </div>
-  </div>
-   </>
-  )
-  else if (!loading && valid) return <Outlet />
-  else if (!loading && !valid) return <Navigate to="/register/login" replace />
+  if (loading)
+    return (
+      <>
+        <div class="h-[100vh] flex justify-center items-center">
+          <div class="w-10 h-10 roll border-4 border-l-slate-400 border-l-solid rounded-full border-solid border-white"></div>
+        </div>
+      </>
+    );
+  else if (!loading && valid) return <Outlet />;
+  else if (!loading && !valid) return <Navigate to="/register/login" replace />;
 }
 export default function Router() {
   return (
