@@ -8,7 +8,7 @@ import Token from "./routes/VerifyToken";
 import Upload from "./routes/Upload";
 import ImageUpload from "./routes/UploadImage";
 import { io, Socket } from "socket.io-client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -17,7 +17,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import axios from "./utils/axios.ts";
-function ProtectedRoute() {
+function ProtectedRoute(): any {
   const [loading, setLoading] = useState<boolean>(true);
   const [valid, setValid] = useState<boolean>(false);
   useEffect(function () {
@@ -32,9 +32,10 @@ function ProtectedRoute() {
         setLoading(false);
       });
   }, []);
-  //return !loading && valid ? children : <Navigate to="/register/login" replace />
-  if (!loading && valid) return <Outlet />;
-  else if (!loading && !valid) return <Navigate to="/register/login" replace />;
+  //return !loading && valid ? children : <Navigate to="/register/login" replace /
+  if(loading) else return <p className="uppercase text-slate-300 font-bold text-center">Loading</p>
+  else if (!loading && valid) return <Outlet />
+  else if (!loading && !valid) return <Navigate to="/register/login" replace />
 }
 export default function Router() {
   return (
@@ -48,7 +49,7 @@ export default function Router() {
           <Route path="home" element={<ProtectedRoute />}>
             <Route path="" element={<Home />} />
           </Route>
-          <Route path="chats/:userId" element={<ProtectedRoute />}>
+          <Route path="chats/:userId" element={(<ProtectedRoute />) as any}>
             <Route path="" element={<Chats />} />
           </Route>
           <Route path="adduser" element={<ProtectedRoute />}>
