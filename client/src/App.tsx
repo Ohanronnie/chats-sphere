@@ -33,7 +33,15 @@ function ProtectedRoute(): any {
       });
   }, []);
   //return !loading && valid ? children : <Navigate to="/register/login" replace /
-  if(loading) return <p className="uppercase text-slate-300 font-bold text-center">Loading</p>
+  if(loading) return (
+   <>
+     <div class="h-[100vh] flex justify-center items-center">
+     <div class="w-10 h-10 roll border-4 border-l-slate-400 border-l-solid rounded-full border-solid border-white">
+    
+  </div>
+  </div>
+   </>
+  )
   else if (!loading && valid) return <Outlet />
   else if (!loading && !valid) return <Navigate to="/register/login" replace />
 }
