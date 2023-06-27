@@ -257,7 +257,7 @@ function Chat() {
               <img
                 src={_times}
                 onClick={() => setReply(null)}
-                class="h-2 w-2"
+                class="h-4 w-4"
               />
             </div>
           )}
