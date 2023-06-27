@@ -18,7 +18,7 @@ const ReplyFrom = (
   return (
     <div
       ref={ref}
-      className="relative rounded-md mb-2 bg-white p-2 w-max max-w-[90%]"
+      className=" rounded-md mb-2 bg-white p-2 w-max max-w-[90%]"
     >
       <div className="flex w-full justify-between">
         <p className="font-bold text-sm text-slate-600">{name}</p>
@@ -62,7 +62,7 @@ const ReplyTo = (
   return (
     <div
       ref={ref}
-      className="relative ml-auto rounded-md mb-2 bg-white p-2 w-max max-w-[90%]"
+      className=" ml-auto rounded-md mb-2 bg-white p-2 w-max max-w-[90%]"
     >
       <div className="flex w-full justify-between">
         <p className="font-bold text-sm text-slate-600">You</p>
