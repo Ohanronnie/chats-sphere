@@ -46,10 +46,11 @@ app.use("/update", update);
 io.on("connection", function (socket) {
     console.log(`${socket.id} just connected`);
     socket.on("newMessage", async function (data) {
-        let { from, to, url, createdAt, message } = data;
+        let { from, to, url, createdAt, message, replyTo } = data;
+        console.log(data)
         try {
             await ChatMessage(data);
-            io.emit("message", { message, to, url, from, createdAt });
+            io.emit("message", { message, to, url, from, createdAt, replyTo });
         }
         catch (err) {
             return;

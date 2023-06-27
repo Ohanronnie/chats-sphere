@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import Chat from "../models/Chat.js";
 export async function ChatMessage(data) {
-    let { from, to, url, createdAt, message } = data;
+    let { from, to, url, createdAt, message, replyTo } = data;
     let sender = (await User.findOne({ _id: from }).select("email"));
     let receiver = (await User.findOne({ _id: to }).select("email"));
     let senderChat = (await Chat.findOne({ email: sender.email }));
@@ -14,6 +14,7 @@ export async function ChatMessage(data) {
     };
     if (url)
         insertedObject.url = url;
+    if(replyTo) insertedObject.replyTo = replyTo;
     if (senderChat.chats.length === 0 ||
         !senderChat.chats.find((e) => e.hasOwnProperty(receiver._id))) {
         senderChat.chats.push({

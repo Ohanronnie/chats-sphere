@@ -9,6 +9,11 @@ export interface IChat {
           createdAt: string;
           url?: string;
           to: string;
+          replyTo?: {
+            from: string;
+            to: string;
+            message: string;
+          };
         }
       ];
     }

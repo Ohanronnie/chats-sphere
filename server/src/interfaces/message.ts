@@ -4,4 +4,9 @@ export interface IMessage {
   url?: string;
   message: string;
   createdAt: Date;
+  replyTo?: {
+    from: string;
+    to: string;
+    message: string;
+  };
 }

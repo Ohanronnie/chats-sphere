@@ -2,7 +2,7 @@ import { IMessage } from "../interfaces/message.js";
 import User from "../models/User.js";
 import Chat from "../models/Chat.js";
 export async function ChatMessage(data: IMessage) {
-  let { from, to, url, createdAt, message } = data;
+  let { from, to, url, createdAt, message, replyTo } = data;
   let sender = (await User.findOne({ _id: from }).select("email")) as any;
   let receiver = (await User.findOne({ _id: to }).select("email")) as any;
   let senderChat = (await Chat.findOne({ email: sender!.email })) as any;
@@ -14,6 +14,7 @@ export async function ChatMessage(data: IMessage) {
     createdAt,
   };
   if (url) insertedObject.url = url;
+  if (replyTo) insertedObject.replyTo = replyTo;
   if (
     senderChat.chats.length === 0 ||
     !senderChat.chats.find((e: any) => e.hasOwnProperty(receiver._id))
