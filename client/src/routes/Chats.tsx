@@ -3,8 +3,15 @@ import mail from "../assets/images/mail.svg";
 import circle from "../assets/images/circle.svg";
 import camera from "../assets/images/camera.svg";
 import leftArrow from "../assets/images/arrow-left.svg";
+import _times from "../assets/images/times.svg";
 
 import axios from "../utils/axios.ts";
+import {
+  FromMessage,
+  ToMessage,
+  ReplyTo,
+  ReplyFrom,
+} from "../components/Message";
 import {
   useState,
   useRef,
@@ -21,6 +28,16 @@ interface IMessage {
   message: string;
   createdAt: string;
   url?: string;
+  replyTo?: {
+    from: string;
+    to: string;
+    message: string;
+  };
+}
+interface IReply {
+  from: string;
+  to: string;
+  message: string;
 }
 function Chat() {
   const [message, setMessage] = useState<IMessage[]>([]);
@@ -28,6 +45,7 @@ function Chat() {
   const [cover, setCover] = useState<string | null>(null);
   const [defMessage, setDefMessage] = useState<string>("");
   const [active, setActive] = useState<boolean>(false);
+  const [reply, setReply] = useState<null | IReply>(null);
   const socket = useContext(SocketContext)!;
   const id = useRef<null | string>(null);
   const msg = useRef<HTMLDivElement | null>(null);
@@ -104,8 +122,22 @@ function Chat() {
         to: userId,
         message: defMessage,
         createdAt: new Date(),
+        replyTo: reply,
       });
     }
+  };
+  const handleReply = (text: string, from: string) => {
+    from === "from"
+      ? setReply({
+          from: userId,
+          to: id.current,
+          message: text,
+        })
+      : setReply({
+          from: id.current,
+          to: userId,
+          message: text,
+        });
   };
   const TransformDate = (date: string) => {
     let _date = new Date(date);
@@ -113,56 +145,71 @@ function Chat() {
     let min = _date.getMinutes().toString().padStart(2, "0");
     return `${hour}:${min}`;
   };
-  const FromMessage = (text: string, date: string, image?: string) => {
-    return (
-      <>
-        <div
-          ref={msg}
-          className="rounded-md mb-2 bg-white p-2 w-max max-w-[90%]"
-        >
-          <p className="font-bold text-sm text-slate-600">{name}</p>
-          {image && (
-            <img
-              src={image}
-              className="object-cover rounded-sm w-full max-h-[20rem]"
-            />
-          )}
-          <p className="text-sm font-base w-full break-words text-slate-500">
-            {text}
-          </p>
-          <p className="text-xs text-slate-400">{TransformDate(date)}</p>
-        </div>
-      </>
-    );
-  };
-  const ToMessage = (text: string, date: string, image?: string) => {
-    return (
-      <>
-        <div
-          ref={msg}
-          className="rounded-md ml-auto mb-2 bg-white p-2 w-max max-w-[90%]"
-        >
-          <p className="font-bold text-sm text-slate-600">You</p>
-          {image && (
-            <img
-              src={image}
-              className="object-cover rounded-sm w-full max-h-[20rem]"
-            />
-          )}
-          <p className="text-sm font-base w-full break-words text-slate-500">
-            {text}
-          </p>
-          <p className="text-xs text-slate-400">{TransformDate(date)}</p>
-        </div>
-      </>
-    );
-  };
   const MapMessage = () => {
     let newMessage = message.map((e: IMessage) => {
-      if (e.from === userId) {
-        return FromMessage(e.message, e.createdAt, e.url);
+      if (!e.replyTo) {
+        if (e.from === userId) {
+          return FromMessage(
+            name,
+            e.message,
+            e.createdAt,
+            msg,
+            handleReply,
+            e.url
+          );
+        } else {
+          return ToMessage(e.message, e.createdAt, msg, handleReply, e.url);
+        }
       } else {
-        return ToMessage(e.message, e.createdAt, e.url);
+        if (e.from === userId) {
+          if (e.replyTo.from === userId) {
+            return ReplyFrom(
+              name,
+              e.message,
+              e.createdAt,
+              handleReply,
+              msg,
+              null,
+              e.replyTo.message,
+              name
+            );
+          } else {
+            return ReplyFrom(
+              name,
+              e.message,
+              e.createdAt,
+              handleReply,
+              msg,
+              null,
+              e.replyTo.message,
+              name
+            );
+          }
+        } else {
+          if (e.replyTo.from === userId) {
+            return ReplyTo(
+              name,
+              e.message,
+              e.createdAt,
+              handleReply,
+              msg,
+              null,
+              e.replyTo.message,
+              name
+            );
+          } else {
+            return ReplyTo(
+              name,
+              e.message,
+              e.createdAt,
+              handleReply,
+              msg,
+              null,
+              e.replyTo.message,
+              "You"
+            );
+          }
+        }
       }
     });
     return newMessage;
@@ -198,36 +245,50 @@ function Chat() {
           {message && MapMessage()}
         </div>
         <form
-          className="bg-white -ml-2 p-2 flex rounded-md w-full mr-2 fixed bottom-0"
+          className="bg-white -ml-2 p-2 rounded-md w-full mr-2 fixed bottom-0"
           onSubmit={handleSubmit}
         >
-          <label
-            className="block bg-slate-100 break-words flex items-center justify-center text-slate-500 ml-2 mr-2 rounded-md h-10 w-10"
-            htmlFor="image"
-          >
-            <img className="w-4 h-4" src={camera} />
-          </label>
-          <input
-            type="file"
-            name="image"
-            id="image"
-            onChange={_handleChange}
-            className="hidden"
-            accept="image/*"
-          />
-          <input
-            className="py-3 px-4 outline-none flex items-center justify-center w-10/12 break-all pl-2 bg-slate-100 text-sm text-slate-500 rounded-md h-10 pt-auto"
-            onChange={handleChange}
-            value={defMessage}
-            placeholder="Enter your message..."
-            type="text"
-          />
-          <button
-            className="bg-slate-100 break-words flex items-center justify-center text-slate-500 ml-2 rounded-md h-10 w-10"
-            type="submit"
-          >
-            <img className="w-6 h-8" src={mail} />
-          </button>
+          {reply && (
+            <div className="flex rounded-md overflow-ellipsis max-h-14 justify-between p-2 mb-2 bg-slate-100">
+              <p className="text-xs overflow-hidden text-slate-400 ">
+                {reply.message}
+              </p>
+              <img
+                src={_times}
+                onClick={() => setReply(null)}
+                class="h-2 w-2"
+              />
+            </div>
+          )}
+          <div className="flex">
+            <label
+              className="block bg-slate-100 break-words flex items-center justify-center text-slate-500 ml-2 mr-2 rounded-md h-10 w-10"
+              htmlFor="image"
+            >
+              <img className="w-4 h-4" src={camera} />
+            </label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              onChange={_handleChange}
+              className="hidden"
+              accept="image/*"
+            />
+            <input
+              className="py-3 px-4 outline-none flex items-center justify-center w-10/12 break-all pl-2 bg-slate-100 text-sm text-slate-500 rounded-md h-10 pt-auto"
+              onChange={handleChange}
+              value={defMessage}
+              placeholder="Enter your message..."
+              type="text"
+            />
+            <button
+              className="bg-slate-100 break-words flex items-center justify-center text-slate-500 ml-2 rounded-md h-10 w-10"
+              type="submit"
+            >
+              <img className="w-6 h-8" src={mail} />
+            </button>
+          </div>
         </form>
       </section>
     </div>
