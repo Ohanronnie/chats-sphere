@@ -183,7 +183,7 @@ function Chat() {
               msg,
               null,
               e.replyTo.message,
-              name
+              "You"
             );
           }
         } else {

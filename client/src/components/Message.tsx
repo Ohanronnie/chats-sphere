@@ -21,7 +21,7 @@ const ReplyFrom = (
       className="relative rounded-md mb-2 bg-white p-2 w-max max-w-[90%]"
     >
       <div className="flex w-full justify-between">
-        <p className="font-bold text-sm text-slate-600">You</p>
+        <p className="font-bold text-sm text-slate-600">{name}</p>
         <img
           onClick={() => handleReply(text, "from")}
           src={_reply}
