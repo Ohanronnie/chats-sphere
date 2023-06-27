@@ -13,7 +13,7 @@ const ReplyFrom = (
   ref: any,
   image?: string,
   replyText?: string,
-  replyName: string
+  replyName?: string
 ) => {
   return (
     <div
@@ -25,7 +25,7 @@ const ReplyFrom = (
         <img
           onClick={() => handleReply(text, "from")}
           src={_reply}
-          className="ml-2 h-3 w-3"
+          className="ml-2 h-4 w-4"
         />
       </div>
       <div className="bg-slate-100 rounded-md ml-2 p-2">
@@ -57,7 +57,7 @@ const ReplyTo = (
   ref: any,
   image?: string,
   replyText?: string,
-  replyName: string
+  replyName?: string
 ) => {
   return (
     <div
@@ -69,7 +69,7 @@ const ReplyTo = (
         <img
           onClick={() => handleReply(text, "to")}
           src={_reply}
-          className="ml-2 h-3 w-3"
+          className="ml-2 h-4 w-4"
         />
       </div>
       <div className="bg-slate-100 rounded-md ml-2 p-2">
@@ -109,7 +109,7 @@ const FromMessage = (
           <img
             src={_reply}
             onClick={() => handleReply(text, "from")}
-            className="ml-2 h-3 w-3"
+            className="ml-2 h-4 w-4"
           />
         </div>
         {image && (
@@ -144,7 +144,7 @@ const ToMessage = (
           <img
             onClick={() => handleReply(text, "to")}
             src={_reply}
-            className="ml-2 h-3 w-3"
+            className="ml-2 h-4 w-4"
           />
         </div>
         {image && (
