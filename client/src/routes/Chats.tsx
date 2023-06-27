@@ -116,6 +116,7 @@ function Chat() {
   const handleSubmit = (ev: FormEvent) => {
     ev.preventDefault();
     setDefMessage("");
+    setReply(null);
     if (defMessage !== " " && defMessage.length >= 1) {
       socket.emit("newMessage", {
         from: id.current,
