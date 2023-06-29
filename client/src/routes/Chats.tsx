@@ -88,7 +88,13 @@ function Chat() {
       .then(({ data }) => {
         setName(data.name);
         setCover(data.cover);
-        setMessage(data.message);
+        setMessage(
+          data.message.sort(
+            (a, b) =>
+              new Date(b.lastMessage.createdAt).getTime() -
+              new Date(a.lastMessage.createdAt).getTime()
+          )
+        );
         setActive(data.online);
         msg.current?.scrollIntoView({ behavior: "smooth" });
         id.current = data.id;
@@ -144,6 +150,7 @@ function Chat() {
     let _date = new Date(date);
     let hour = _date.getHours().toString().padStart(2, "0");
     let min = _date.getMinutes().toString().padStart(2, "0");
+
     return `${hour}:${min}`;
   };
   const MapMessage = () => {
