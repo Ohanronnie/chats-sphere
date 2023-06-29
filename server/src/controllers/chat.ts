@@ -89,8 +89,7 @@ class ChatController {
 
       let sorted = userData.sort(
         (a, b) =>
-          new Date(b.lastMessage.createdAt).getTime() -
-          new Date(a.lastMessage.createdAt).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
       res.status(200).json({
         id: user._id,

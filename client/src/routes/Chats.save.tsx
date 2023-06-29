@@ -4,8 +4,8 @@ import circle from "../assets/images/circle.svg";
 import camera from "../assets/images/camera.svg";
 import leftArrow from "../assets/images/arrow-left.svg";
 import _times from "../assets/images/times.svg";
+
 import axios from "../utils/axios.ts";
-import extract from "../utils/extract.ts";
 import {
   FromMessage,
   ToMessage,
@@ -147,8 +147,8 @@ function Chat() {
 
     return `${hour}:${min}`;
   };
-  const MapMessage = (_message) => {
-    let newMessage = _message.map((e: IMessage) => {
+  const MapMessage = () => {
+    let newMessage = message.map((e: IMessage) => {
       if (!e.replyTo) {
         if (e.from === userId) {
           return FromMessage(
@@ -216,24 +216,6 @@ function Chat() {
     });
     return newMessage;
   };
-  function handleMessage(message: any) {
-    let extracted = extract(message);
-    let arr = Object.keys(extracted).map((value: any, index: number) => {
-      return (
-        <div>
-          <p class="bg-slate-300 relative -z-10 w-max left-[50%] translate-x-[-50%] text-slate-100 text-xs flex justify-center text-center p-1 mb-1 rounded-md">
-            {new Date(date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-          {MapMessage(extracted[value])}
-        </div>
-      );
-    });
-    return arr;
-  }
   return (
     <div className="bg-slate-100 h-[100vh]">
       <nav className="h-16 mt-2 p-0 rounded-md w-11/12 fixed left-[50%] translate-x-[-50%] flex justify-around lowercase items-center shadoew-md bg-white">
@@ -262,7 +244,7 @@ function Chat() {
       </nav>
       <section className="ml-2 mr-2 pt-[5rem]">
         <div className="ml-2 bg-slate-100 h-[70vh] overflow-y-scroll">
-          {message && handleMessage(message)}
+          {message && MapMessage()}
         </div>
         <form
           className="bg-white -ml-2 p-2 rounded-md w-full mr-2 fixed bottom-0"
