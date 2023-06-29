@@ -88,13 +88,7 @@ function Chat() {
       .then(({ data }) => {
         setName(data.name);
         setCover(data.cover);
-        setMessage(
-          data.message.sort(
-            (a, b) =>
-              new Date(b.lastMessage.createdAt).getTime() -
-              new Date(a.lastMessage.createdAt).getTime()
-          )
-        );
+        setMessage(data.message);
         setActive(data.online);
         msg.current?.scrollIntoView({ behavior: "smooth" });
         id.current = data.id;

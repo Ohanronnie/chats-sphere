@@ -22,6 +22,7 @@ interface IMessageList {
   id: string;
   isOnline?: string;
 }
+
 function Home() {
   const [messageList, setMessageList] = useState<IMessageList[] | null>(null);
   const details = useRef<null | any>(null);
@@ -35,7 +36,13 @@ function Home() {
     axios()
       .post("/api/messagelist")
       .then(({ data }) => {
-        setMessageList(data.list);
+        setMessageList(
+          data.list.sort(
+            (a, b) =>
+              new Date(b.lastMessage.createdAt).getTime() -
+              new Date(a.lastMessage.createdAt).getTime()
+          )
+        );
         id.current = data.id!;
       })
       .catch(console.log);
