@@ -229,8 +229,8 @@ function Chat() {
                 day: "numeric",
               })}
             </p>
-            {MapMessage(extracted[value])}
           </div>
+          {MapMessage(extracted[value])}
         </div>
       );
     });
