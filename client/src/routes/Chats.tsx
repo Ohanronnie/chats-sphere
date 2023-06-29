@@ -221,7 +221,7 @@ function Chat() {
     let arr = Object.keys(extracted).map((value: any, index: number) => {
       return (
         <div>
-          <p class="bg-slate-300 relative -z-10 w-max left-[50%] translate-x-[-50%] text-slate-100 text-xs flex justify-center text-center p-1 mb-1 rounded-md">
+          <p class="bg-slate-300 relative w-max left-[50%] translate-x-[-50%] text-slate-100 text-xs flex justify-center text-center p-1 mb-1 rounded-md">
             {new Date(value).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
