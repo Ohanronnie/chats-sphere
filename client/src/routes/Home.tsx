@@ -36,13 +36,13 @@ function Home() {
     axios()
       .post("/api/messagelist")
       .then(({ data }) => {
-        setMessageList(
-          data.list.sort(
-            (a, b) =>
-              new Date(b.lastMessage.createdAt).getTime() -
-              new Date(a.lastMessage.createdAt).getTime()
-          )
+        let _m = data.list.sort(
+          (a, b) =>
+            new Date(b.lastMessage.createdAt).getTime() -
+            new Date(a.lastMessage.createdAt).getTime()
         );
+        alert(JSON.stringify(_m, null, 1));
+        setMessageList(_m);
         id.current = data.id!;
       })
       .catch(console.log);
