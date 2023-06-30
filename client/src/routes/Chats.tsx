@@ -5,7 +5,7 @@ import camera from "../assets/images/camera.svg";
 import leftArrow from "../assets/images/arrow-left.svg";
 import _times from "../assets/images/times.svg";
 import axios from "../utils/axios.ts";
-import extract from "../utils/extract.ts";
+import extract, { getDateFunction } from "../utils/extract.ts";
 import {
   FromMessage,
   ToMessage,
@@ -223,11 +223,7 @@ function Chat() {
         <div>
           <div class="w-full flex justify-center">
             <p class="bg-slate-300 text-slate-100 text-xs flex justify-center text-center p-1 mb-1 rounded-md">
-              {new Date(value).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {getDateFunction(value)}
             </p>
           </div>
           {MapMessage(extracted[value])}
