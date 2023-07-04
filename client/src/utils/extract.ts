@@ -1,6 +1,6 @@
 function extract(_data: any) {
   let groups = {};
-  let data = structuredClone(_data);
+  let data = _data;
   data.forEach(function (val: any) {
     var date = val.createdAt.split("T")[0];
     if (date in groups) {
